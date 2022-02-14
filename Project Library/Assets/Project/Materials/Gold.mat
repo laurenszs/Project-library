@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-929483689639270807
+--- !u!114 &-4583392499187964291
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Overshield
-  m_Shader: {fileID: -6465566751694194690, guid: 320e22531ecc73b4c8446fa1d084ffb2, type: 3}
+  m_Name: Gold
+  m_Shader: {fileID: -6465566751694194690, guid: 1503ddf2c678f594781dab57b2197d13, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -32,8 +32,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_8a878ca9d8594c3d80abb09a086e923c:
-        m_Texture: {fileID: 2800000, guid: 80fb69baf9ab3734dbecddde5c9d1307, type: 3}
+    - Texture2D_3575166b06904e9e9134373b5a01cf94:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -93,12 +93,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Boolean_4d9e95e97827405fb0fbef7dc71569d3: 0
-    - Boolean_68c0da9d0d5b4dc8b4fe1967f7b1f414: 1
-    - Vector1_356fb5ddca2e4803825622a4fee32a3c: -3.11
-    - Vector1_98d462bf98a24d4a8df83ae25cef4a4d: 0.81
-    - Vector1_f07090f05f284b44b22270dab270f7cd: 1
-    - Vector1_f07090f05f284b44b22270dab270f7cd_1: 1
+    - Boolean_3bd34eed874345878e720dede5fb6ec9: 0
+    - Boolean_4716e472eece4b8f8734a870aa80173e: 0
+    - Vector1_750558d03f404882a40cfcac71cdb9c9: 1
+    - Vector1_a31a98e5eb094dd39cd075c144536997: -0.18
+    - Vector1_df6a9a4ef8224e0d856df715fc521655: -1.65
+    - Vector1_e3b287eeaaa347d68507d84f2fe6316b: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -126,8 +126,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_1: {r: 1, g: 0, b: 0, a: 0}
-    - Color_1f7a5751cf7645fdab1832437b7f2a52: {r: 6.4222345, g: 6.4222345, b: 6.4222345, a: 0}
+    - Color_74c1424f384341379f34a9fb2a37f7f1: {r: 1023.9999, g: 671.31793, b: 0, a: 0}
+    - Color_a53a4377f8674a9c93aeac6fa99d9396: {r: 1, g: 0.63411754, b: 0, a: 0}
+    - Color_ca1dfeacfaae47ea88b22cef25fb4f41: {r: 1, g: 0.39636728, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
