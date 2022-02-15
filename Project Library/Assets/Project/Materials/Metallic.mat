@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 4
+  version: 5
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -96,6 +96,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - Boolean_3bd34eed874345878e720dede5fb6ec9: 1
     - Boolean_4716e472eece4b8f8734a870aa80173e: 1
@@ -120,6 +121,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -131,6 +133,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_74c1424f384341379f34a9fb2a37f7f1: {r: 0.5372548, g: 0, b: 1, a: 0}
+    - Color_a53a4377f8674a9c93aeac6fa99d9396: {r: 0, g: 0, b: 0, a: 0}
     - Color_ca1dfeacfaae47ea88b22cef25fb4f41: {r: 0, g: 0.011764765, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
