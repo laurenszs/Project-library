@@ -1,27 +1,37 @@
+using TMPro;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class ChangeColor : MonoBehaviour
 {
-   [SerializeField] private Material vapeMaterial;
-   [SerializeField] private Color _lineColor;
-   public FlexibleColorPicker fcp;
-   
-    // Start is called before the first frame update
-    void Start()
-    {
+    [SerializeField] private Material vapeMaterial;
+    [SerializeField] private FlexibleColorPicker linePicker;
+    [Header("Tiling")] [SerializeField] private TMP_InputField hor;
+    [SerializeField] private TMP_InputField ver;
 
+    private Vector2 _tiling;
+
+    /*private ChangeColor()
+    {
+        InputNullChecker();
+        LineModifiers();
+    }*/
+
+    private void Update()
+    {
+        InputNullChecker();
+        LineModifiers();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LineModifiers()
     {
-        LineColor();
+        vapeMaterial.SetColor("Vape_Color", linePicker.color);
+        _tiling = new Vector2(int.Parse(hor.text), int.Parse(ver.text));
+        vapeMaterial.SetVector("_tiling", _tiling);
     }
 
-    private void LineColor()
+    private void InputNullChecker()
     {
-       // vapeMaterial.SetColor("Vape_Color",_lineColor);
-        vapeMaterial.SetColor("Vape_Color", fcp.color);
+        if (string.IsNullOrEmpty(hor.text)) hor.text = "0";
+        if (string.IsNullOrEmpty(ver.text)) ver.text = "0";
     }
 }

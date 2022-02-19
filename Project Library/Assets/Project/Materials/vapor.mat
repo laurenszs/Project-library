@@ -132,8 +132,8 @@ Material:
     - _scrollspeed: 1
     m_Colors:
     - Color_1: {r: 1, g: 0, b: 0.76484203, a: 0}
-    - Color_1f7a5751cf7645fdab1832437b7f2a52: {r: 1, g: 1, b: 1, a: 0}
-    - Vape_Color: {r: 0.99034977, g: 0, b: 1, a: 1}
+    - Color_1f7a5751cf7645fdab1832437b7f2a52: {r: 1, g: 0, b: 0, a: 0}
+    - Vape_Color: {r: 0, g: 0.7607843, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
