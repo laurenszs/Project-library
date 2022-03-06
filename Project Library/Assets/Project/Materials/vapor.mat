@@ -133,11 +133,11 @@ Material:
     m_Colors:
     - Color_1: {r: 1, g: 0, b: 0.76484203, a: 0}
     - Color_1f7a5751cf7645fdab1832437b7f2a52: {r: 1, g: 0, b: 0, a: 0}
-    - Vape_Color: {r: 0.4201062, g: 0, b: 0.4245283, a: 1}
+    - Vape_Color: {r: 0, g: 0.6074536, b: 0.9134992, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Vector2: {r: 0, g: 0.1, b: 0, a: 0}
-    - _tiling: {r: 350, g: 350, b: 0, a: 0}
+    - _tiling: {r: 500, g: 350, b: 0, a: 0}
   m_BuildTextureStacks: []
