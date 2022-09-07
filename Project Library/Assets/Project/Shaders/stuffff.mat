@@ -52,5 +52,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _Swirl_Str: 0.03
+    m_Colors:
+    - _Color: {r: 0.16747367, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
