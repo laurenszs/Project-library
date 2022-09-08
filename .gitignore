@@ -37,3 +37,4 @@ sysinfo.txt
 *.unitypackage
 *.log
 Project Library/ProjectSettings/ProjectVersion.txt
+*.log

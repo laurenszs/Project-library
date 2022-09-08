@@ -38,12 +38,7 @@ public class CreateFace : MonoBehaviour
         _tris[3] = 3;
         _tris[4] = 2;
         _tris[5] = 1;
-
-        // uv[0] = new Vector2(0, 0);
-        // uv[1] = new Vector2(.5f, 1);
-        // uv[2] = new Vector2(1, 0);
-        // uv[3] = new Vector2(1, 1);
-
+   
         _mesh.vertices = _verts;
         _mesh.triangles = _tris;
         _mesh.uv = uv;
