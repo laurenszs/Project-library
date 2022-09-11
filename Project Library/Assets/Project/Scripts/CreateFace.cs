@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -5,7 +6,7 @@ public class CreateFace : MonoBehaviour
 {
     public int nVerts = 4;
     public Vector3[] vertPoints;
-    public Vector2[] uv;
+    [ReadOnly] [SerializeField] private Vector2[] uv;
 
     private Vector3[] _verts;
     private int[] _tris;
@@ -17,8 +18,6 @@ public class CreateFace : MonoBehaviour
     private void Start()
     {
         _mesh = GetComponent<MeshFilter>().mesh;
-
-        uv = new Vector2[nVerts];
     }
 
     private void Update()
@@ -38,9 +37,23 @@ public class CreateFace : MonoBehaviour
         _tris[3] = 3;
         _tris[4] = 2;
         _tris[5] = 1;
-   
+
+        // uv = new Vector2[nVerts];
+        // var uvIndex = 0;
+        // for (int i = 0; i < nVerts; i++)
+        // {
+        //     uv[uvIndex] = new Vector2(uvIndex, uvIndex);
+        //     uv[uvIndex + 1] = new Vector2(uvIndex, uvIndex + 1);
+        //     uv[uvIndex + 2] = new Vector2(uvIndex + 1, uvIndex);
+        //     uv[uvIndex + 3] = new Vector2(uvIndex + 1, uvIndex + 1);
+        // }
+
+
         _mesh.vertices = _verts;
         _mesh.triangles = _tris;
-        _mesh.uv = uv;
+        _mesh.uv = new[]
+        {
+            Vector2.zero, Vector2.right, Vector2.up
+        };
     }
 }

@@ -1,22 +1,32 @@
+using System;
 using System.Collections;
+using Unity.Collections;
 using UnityEngine;
 
 public class AudioSyncScale : AudioSync
 {
     public Vector3 beatScale;
     public Vector3 restScale;
+    [ReadOnly] public Vector3 _curr;
+    public static AudioSyncScale instance;
+
+    private void Start()
+    {
+        instance = this;
+    }
 
     private IEnumerator MoveToScale(Vector3 _target)
     {
-        Vector3 _curr = transform.localScale;
+        _curr = transform.localScale;
         Vector3 _initial = _curr;
+
         float _timer = 0;
         while (_curr != _target)
         {
             _curr = Vector3.Lerp(_initial, _target, _timer / timeToBeat);
             _timer += Time.deltaTime;
 
-            transform.localScale = _curr;
+            // transform.localScale = _curr;
 
             yield return null;
         }
@@ -29,7 +39,7 @@ public class AudioSyncScale : AudioSync
         base.OnUpdate();
         if (m_isBeat) return;
 
-        transform.localScale = Vector3.Lerp(transform.localScale, restScale, restSmoothTime * Time.deltaTime);
+        //  transform.localScale = Vector3.Lerp(transform.localScale, restScale, restSmoothTime * Time.deltaTime);
     }
 
     public override void OnBeat()

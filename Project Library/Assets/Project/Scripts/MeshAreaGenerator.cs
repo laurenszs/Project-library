@@ -1,3 +1,5 @@
+using Sirenix.OdinInspector;
+using Unity.Mathematics;
 using UnityEngine;
 
 
@@ -12,22 +14,24 @@ public class MeshAreaGenerator : MonoBehaviour
     public int xSize = 20;
     public int zSize = 20;
 
-
+    public float beatStrength = 1;
     public float Ystrength = 2f;
+
     public float xSeed = .3f, zSeed = .3f;
+    [ReadOnly] [SerializeField] private Vector2[] uv;
 
     void Start()
     {
         _mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = _mesh;
-
-
     }
 
     private void Update()
     {
         UpdateMesh();
         CreateArea();
+
+        Debug.Log("curr " + AudioSyncScale.instance._curr);
     }
 
     void CreateArea()
@@ -39,7 +43,9 @@ public class MeshAreaGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * xSeed, z * zSeed) * Ystrength;
+                var y = Mathf.PerlinNoise(x + ((Time.time + (AudioSyncScale.instance._curr.y * beatStrength) * xSeed)),
+                            z + ((Mathf.Sin(Time.time + (AudioSyncScale.instance._curr.y * beatStrength))) * zSeed)) *
+                        Ystrength;
                 _vertices[i] = new Vector3(x, y, z);
                 i++;
             }
@@ -72,6 +78,10 @@ public class MeshAreaGenerator : MonoBehaviour
         _mesh.Clear();
         _mesh.vertices = _vertices;
         _mesh.triangles = _triangles;
+        _mesh.uv = new[]
+        {
+            Vector2.zero, Vector2.right, Vector2.up
+        };
     }
 
     private void OnDrawGizmos()
