@@ -1,5 +1,4 @@
 using Sirenix.OdinInspector;
-using Unity.Mathematics;
 using UnityEngine;
 
 
@@ -14,11 +13,10 @@ public class MeshAreaGenerator : MonoBehaviour
     public int xSize = 20;
     public int zSize = 20;
 
-    public float beatStrength = 1;
     public float Ystrength = 2f;
 
     public float xSeed = .3f, zSeed = .3f;
-    [ReadOnly] [SerializeField] private Vector2[] uv;
+    [ReadOnly] public Vector2[] uv;
 
     void Start()
     {
@@ -28,8 +26,9 @@ public class MeshAreaGenerator : MonoBehaviour
 
     private void Update()
     {
-        UpdateMesh();
         CreateArea();
+        UpdateMesh();
+
 
         Debug.Log("curr " + AudioSyncScale.instance._curr);
     }
@@ -37,16 +36,19 @@ public class MeshAreaGenerator : MonoBehaviour
     void CreateArea()
     {
         _vertices = new Vector3[(xSize + 1) * (zSize + 1)];
-
+        uv = new Vector2[(xSize + 1) * (zSize + 1)];
 
         for (int i = 0, z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
-                var y = Mathf.PerlinNoise(x + ((Time.time + (AudioSyncScale.instance._curr.y * beatStrength) * xSeed)),
-                            z + ((Mathf.Sin(Time.time + (AudioSyncScale.instance._curr.y * beatStrength))) * zSeed)) *
+                var y = Mathf.PerlinNoise(x + ((Time.time + (AudioSyncScale.instance._curr.y) * xSeed)),
+                            z + ((Mathf.Sin(Time.time + (AudioSyncScale.instance._curr.y))) * zSeed)) *
                         Ystrength;
+
                 _vertices[i] = new Vector3(x, y, z);
+
+                uv[i] = new Vector2((float) x / xSize, (float) z / zSize); //uv calc
                 i++;
             }
         }
@@ -78,10 +80,8 @@ public class MeshAreaGenerator : MonoBehaviour
         _mesh.Clear();
         _mesh.vertices = _vertices;
         _mesh.triangles = _triangles;
-        _mesh.uv = new[]
-        {
-            Vector2.zero, Vector2.right, Vector2.up
-        };
+        _mesh.uv = uv;
+        _mesh.RecalculateNormals();
     }
 
     private void OnDrawGizmos()
