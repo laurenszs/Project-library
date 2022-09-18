@@ -14,8 +14,6 @@ Shader "Unlit/Specular"
     }
     SubShader
     {
-
-
         Pass
         {
             Tags
