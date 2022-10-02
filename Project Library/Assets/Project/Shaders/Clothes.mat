@@ -37,7 +37,7 @@ Material:
     - _Factor: 0.312
     - _Intensity: 0
     - _Outline: 0.1
-    - _Threshold: 4.47
+    - _Threshold: 15.2
     - _Treshold: 5.66
     - _WireframeVal: 0.013
     m_Colors:

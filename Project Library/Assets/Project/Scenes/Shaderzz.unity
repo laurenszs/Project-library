@@ -736,7 +736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1388477239947515812, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -36.7
+      value: -22.53
       objectReference: {fileID: 0}
     - target: {fileID: 1388477239947515812, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_LocalPosition.y
@@ -744,7 +744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1388477239947515812, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.032
+      value: -3.6
       objectReference: {fileID: 0}
     - target: {fileID: 1388477239947515812, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_LocalRotation.w
@@ -779,13 +779,17 @@ PrefabInstance:
       value: SpaceShipThingy
       objectReference: {fileID: 0}
     - target: {fileID: 3156502549175297664, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9d3b7e57d561b1e4399665765de69588, type: 2}
+    - target: {fileID: 3156502549175297664, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 36a0c4954e4f0e34aae2293263b23b05, type: 2}
+      objectReference: {fileID: 2100000, guid: b0a6a60d0163d5441b789fac238fc331, type: 2}
     - target: {fileID: 3156502549175297664, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: 36a0c4954e4f0e34aae2293263b23b05, type: 2}
+      objectReference: {fileID: 2100000, guid: 66d5a231e625ba149b873c3ff633a755, type: 2}
     - target: {fileID: 3156502549175297664, guid: 6af1ae730702b1447ac36b41477e5514, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 

@@ -29,14 +29,14 @@ Material:
         m_Offset: {x: 2.44, y: 0}
     m_Ints: []
     m_Floats:
-    - _Amplitude: 0.1
+    - _Amplitude: 0.29
     - _Diffuse: 1
     - _Factor: 0.176
-    - _Frequency: 0.698
+    - _Frequency: 0.246
     - _ScrollXSpeed: -4.24
     - _ScrollYSpeed: 0
     - _Shininess: 10
-    - _Speed: 7
+    - _Speed: 12.06
     - _Threshhold: 5
     - _XThreshhold: 5
     - _YThreshhold: -2.2
