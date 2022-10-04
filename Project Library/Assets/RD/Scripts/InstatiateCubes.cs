@@ -46,7 +46,7 @@ namespace RD.Scripts
                     _cubeList[i].transform.localScale =
                         new Vector3(cubeSizeX, (SpectrumAnalysis.samples[i] * maxYScale) + startingSize,
                             cubeSizeZ);
-                    if (SpectrumAnalysis.samples[i] > detectionThreshold)
+                    if (SpectrumAnalysis.samples[i] > detectionThreshold) //check for amplitude above certain threshold
                     {
                         _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.red;
                     }

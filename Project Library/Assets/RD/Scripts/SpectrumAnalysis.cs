@@ -12,17 +12,20 @@ namespace RD.Scripts
         public static float[] samples;
         private AudioSource _audioSource;
 
+        [ReadOnly] public float[] sampleShower;
+
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             samples = new float[sampleSize];
-
             _audioSource = GetComponent<AudioSource>();
+            _audioSource.PlayOneShot();
         }
 
         // Update is called once per frame
         private void Update()
         {
+            sampleShower = samples; //display samples list
             GetSpectrumData();
         }
 

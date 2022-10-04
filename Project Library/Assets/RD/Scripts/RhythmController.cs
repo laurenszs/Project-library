@@ -1,4 +1,5 @@
-using System;
+using System.Collections.Generic;
+using RD.Scripts.Scriptable;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -21,9 +22,11 @@ namespace RD.Scripts
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
         private float delay;
 
+        [TabGroup("TimerData")] public SongTemplate songTemplate;
+
 
         [TabGroup("TimerData")] [SerializeField]
-        private float[] rhythmPoints;
+        private List<float> rhythmPoints;
 
         [TabGroup("TimerData")] [SerializeField]
         private int rhythmPointIndex;
@@ -38,21 +41,39 @@ namespace RD.Scripts
             key = KeyCode.Space;
             timer = 0;
             rhythmPointIndex = 0;
+
+            if (!songTemplate)
+            {
+                Debug.LogWarning("No template added");
+                return;
+            }
+
+            rhythmPoints = songTemplate.peakPoints;
         }
 
         // Update is called once per frame
         private void Update()
         {
             SetTimer();
-            setScore();
+            SetScore();
             CalculateDelay();
             SetTexts();
+            if (rhythmPointIndex > rhythmPoints.Count)
+            {
+                rhythmPointIndex = 0;
+            }
         }
 
         private void CalculateDelay()
         {
-            if (timer > rhythmPoints[rhythmPointIndex] + scoreDelay)
-                Mathf.Clamp(rhythmPointIndex++, 0, rhythmPoints.Length);
+            if (!(timer > rhythmPoints[rhythmPointIndex] + scoreDelay))//when timer exceeds rhythmpoint add to index
+            {
+                rhythmPointIndex = 0;
+                return;
+            }
+
+            if (rhythmPointIndex >= rhythmPoints.Count) return;
+            Mathf.Clamp(rhythmPointIndex++, 0, rhythmPoints.Count);
 
             delay = timer - rhythmPoints[rhythmPointIndex];
         }
@@ -69,7 +90,7 @@ namespace RD.Scripts
             scoreText.text = score.ToString();
         }
 
-        private void setScore()
+        private void SetScore()
         {
             if (Input.GetKeyDown(key))
             {
