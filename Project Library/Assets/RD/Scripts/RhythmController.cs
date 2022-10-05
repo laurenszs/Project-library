@@ -38,13 +38,12 @@ namespace RD.Scripts
         // Start is called before the first frame update
         private void Start()
         {
-            key = KeyCode.Space;
             timer = 0;
             rhythmPointIndex = 0;
 
             if (!songTemplate)
             {
-                Debug.LogWarning("No template added");
+                Debug.LogWarning($"No template added to {this}");
                 return;
             }
 
@@ -56,46 +55,36 @@ namespace RD.Scripts
         {
             SetTimer();
             SetScore();
-            CalculateDelay();
-            SetTexts();
-            if (rhythmPointIndex > rhythmPoints.Count)
-            {
-                rhythmPointIndex = 0;
-            }
+            CalculateDelayScore();
         }
 
-        private void CalculateDelay()
+
+        private void CalculateDelayScore()
         {
-            if (!(timer > rhythmPoints[rhythmPointIndex] + scoreDelay))//when timer exceeds rhythmpoint add to index
+            if (rhythmPointIndex >= rhythmPoints.Count)
             {
                 rhythmPointIndex = 0;
-                return;
             }
-
-            if (rhythmPointIndex >= rhythmPoints.Count) return;
-            Mathf.Clamp(rhythmPointIndex++, 0, rhythmPoints.Count);
-
-            delay = timer - rhythmPoints[rhythmPointIndex];
+            else if (timer > rhythmPoints[rhythmPointIndex] + scoreDelay) //when timer exceeds rhythmpoint add to index
+            {
+                delay = timer - rhythmPoints[rhythmPointIndex];
+                currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
+                rhythmPointIndex++;
+            }
         }
 
         private void SetTimer()
         {
             timer += Time.deltaTime;
+            timerText.text = timer.ToString();
         }
 
-        private void SetTexts()
-        {
-            timerText.text = timer.ToString();
-            currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
-            scoreText.text = score.ToString();
-        }
 
         private void SetScore()
         {
-            if (Input.GetKeyDown(key))
-            {
-                score += Mathf.RoundToInt(delay);
-            }
+            if (!Input.GetKeyDown(key)) return;
+            score += Mathf.RoundToInt(delay);
+            scoreText.text = score.ToString();
         }
     }
 }

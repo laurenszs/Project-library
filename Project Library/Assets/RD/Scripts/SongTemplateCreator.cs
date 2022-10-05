@@ -6,52 +6,42 @@ using UnityEngine;
 
 namespace RD.Scripts
 {
-    [RequireComponent(typeof(AudioSource))]
-    public class SongTemplateCreator : MonoBehaviour
+    public class SongTemplateCreator : SpectrumAnalysis
     {
-        [ReadOnly] [SerializeField] private float[] peakPoints;
-        [ReadOnly] [SerializeField] private float timer;
-        public bool createTemplate;
+        [Title("Template")] public bool createTemplate;
 
-        public int bassRange = 50;
+        [ShowIfGroup("createTemplate")] [ReadOnly] [SerializeField]
+        private float timer;
 
-        public float detectionThreshold = .03f;
+        [Title("", "Template modifiers")] [ShowIfGroup("createTemplate")] [ShowIfGroup("createTemplate")]
+        public Vector2 analysisRange = new(0, 50);
 
-        [ReadOnly] public List<float> newTemplateList;
+        [ShowIfGroup("createTemplate")] public float detectionThreshold = .03f;
 
-        public SongTemplate songTemplate;
+        [ShowIfGroup("createTemplate")] public AudioSource beepAudioSource;
+        [ShowIfGroup("createTemplate")] public AudioClip beepSound;
 
-        public AudioClip beepSound;
+        [Title("", "Template data")] [ShowIfGroup("createTemplate")]
+        public AudioSource templateAudioSource;
 
-        [SerializeField] private AudioSource audioSource;
+        [ShowIfGroup("createTemplate")] public SongTemplate songTemplate;
 
-        private AudioSource localAudiosource;
+        [ShowIfGroup("createTemplate")] [ReadOnly]
+        public List<float> newTemplateList;
+
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            localAudiosource = GetComponent<AudioSource>();
+            // songTemplate.audioClip
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if (createTemplate)
-            {
-                SetTimer();
-            }
-
-            for (var i = 0; i < bassRange; i++)
-            {
-                if (SpectrumAnalysis.samples[i] >= detectionThreshold)
-                {
-                    audioSource.PlayOneShot(beepSound);
-                    Debug.Log("added");
-                    newTemplateList.Add(timer);
-                    newTemplateList = newTemplateList.Distinct().ToList();
-                    songTemplate.peakPoints = newTemplateList;
-                }
-            }
+            if (!createTemplate) return;
+            SetTimer();
+            SendToScriptable();
         }
 
         private void SetTimer()
@@ -59,9 +49,19 @@ namespace RD.Scripts
             timer += Time.deltaTime;
         }
 
-        private void sendToScriptable()
+        private void SendToScriptable()
         {
-            songTemplate.peakPoints = newTemplateList;
+            for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
+            {
+                if (samples[i] >= detectionThreshold)
+                {
+                    beepAudioSource.PlayOneShot(beepSound);
+                    Debug.Log("added");
+                    newTemplateList.Add(timer);
+                    newTemplateList = newTemplateList.Distinct().ToList();
+                    songTemplate.peakPoints = newTemplateList;
+                }
+            }
         }
     }
 }

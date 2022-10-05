@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: newnew
   m_EditorClassIdentifier: 
   peakPoints: []
+  audioClip: {fileID: 8300000, guid: d3f3d44b0e9de8a4d8713d38c7f22f77, type: 3}

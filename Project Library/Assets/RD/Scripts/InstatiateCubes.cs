@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace RD.Scripts
 {
+    [RequireComponent(typeof(SpectrumAnalysis))]
     public class InstatiateCubes : MonoBehaviour
     {
         public GameObject cubePrefab;
@@ -61,6 +62,5 @@ namespace RD.Scripts
                 }
             }
         }
-
     }
 }
