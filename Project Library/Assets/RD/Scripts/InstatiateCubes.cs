@@ -13,7 +13,7 @@ namespace RD.Scripts
 
         public float startingSize = 2;
 
-        public float detectionThreshold;
+        [Range(.01f, .4f)] public float detectionThreshold;
 
         private GameObject[] _cubeList;
 
@@ -23,7 +23,7 @@ namespace RD.Scripts
         // Start is called before the first frame update
         private void Start()
         {
-            _cubeList = new GameObject[SpectrumAnalysis.sampleSize];
+            _cubeList = new GameObject[SpectrumAnalysis.instance.sampleSize];
             for (var i = 0; i < _cubeList.Length; i++)
             {
                 var instancedCube = Instantiate(cubePrefab, this.transform);
@@ -45,13 +45,14 @@ namespace RD.Scripts
                 if (_cubeList != null)
                 {
                     _cubeList[i].transform.localScale =
-                        new Vector3(cubeSizeX, (SpectrumAnalysis.samples[i] * maxYScale) + startingSize,
+                        new Vector3(cubeSizeX, (SpectrumAnalysis.instance.samples[i] * maxYScale) + startingSize,
                             cubeSizeZ);
-                    if (SpectrumAnalysis.samples[i] > detectionThreshold) //check for amplitude above certain threshold
+                    if (SpectrumAnalysis.instance.samples[i] >
+                        detectionThreshold) //check for amplitude above certain threshold
                     {
                         _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.red;
                     }
-                    else if (SpectrumAnalysis.samples[i] > detectionThreshold / 2)
+                    else if (SpectrumAnalysis.instance.samples[i] > detectionThreshold / 2)
                     {
                         _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
                     }

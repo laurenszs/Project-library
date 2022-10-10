@@ -34,13 +34,8 @@ namespace RD.Scripts
         [TabGroup("Score")] [ReadOnly] [SerializeField]
         private int score;
 
-
-        // Start is called before the first frame update
-        private void Start()
+        private void Awake()
         {
-            timer = 0;
-            rhythmPointIndex = 0;
-
             if (!songTemplate)
             {
                 Debug.LogWarning($"No template added to {this}");
@@ -48,6 +43,13 @@ namespace RD.Scripts
             }
 
             rhythmPoints = songTemplate.peakPoints;
+        }
+
+        // Start is called before the first frame update
+        private void Start()
+        {
+            timer = 0;
+            rhythmPointIndex = 0;
         }
 
         // Update is called once per frame
@@ -83,7 +85,8 @@ namespace RD.Scripts
         private void SetScore()
         {
             if (!Input.GetKeyDown(key)) return;
-            score += Mathf.RoundToInt(delay);
+            Debug.Log("erg0jmeprgpomergpom");
+            score += (int) delay;
             scoreText.text = score.ToString();
         }
     }

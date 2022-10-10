@@ -2,61 +2,82 @@ using System.Collections.Generic;
 using System.Linq;
 using RD.Scripts.Scriptable;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RD.Scripts
 {
-    public class SongTemplateCreator : SpectrumAnalysis
+    public class SongTemplateCreator : MonoBehaviour
     {
         [Title("Template")] public bool createTemplate;
 
-        [ShowIfGroup("createTemplate")] [ReadOnly] [SerializeField]
-        private float timer;
+        [ReadOnly] [SerializeField] private float timer;
 
-        [Title("", "Template modifiers")] [ShowIfGroup("createTemplate")] [ShowIfGroup("createTemplate")]
-        public Vector2 analysisRange = new(0, 50);
+        [ReadOnly] [SerializeField] private float TimingCooldown;
 
-        [ShowIfGroup("createTemplate")] public float detectionThreshold = .03f;
+        [SerializeField] private float secondsBetweenAdding;
 
-        [ShowIfGroup("createTemplate")] public AudioSource beepAudioSource;
+
+        [Title("", "Template data")] public Vector2 analysisRange = new(0, 50);
+
+        [Range(.01f, .4f)] public float detectionThreshold = .03f;
+        [SerializeField] private bool overrideTemplate = false;
+
+        public SongTemplate songTemplate;
+
+        [ReadOnly] public List<float> newTemplateList;
+
+
+        [Title("", "Debug Noise")] public AudioSource beepAudioSource;
+
         [ShowIfGroup("createTemplate")] public AudioClip beepSound;
 
-        [Title("", "Template data")] [ShowIfGroup("createTemplate")]
-        public AudioSource templateAudioSource;
-
-        [ShowIfGroup("createTemplate")] public SongTemplate songTemplate;
-
-        [ShowIfGroup("createTemplate")] [ReadOnly]
-        public List<float> newTemplateList;
-
-
-        // Start is called before the first frame update
-        private void Start()
-        {
-            // songTemplate.audioClip
-        }
-
-        // Update is called once per frame
+// Update is called once per frame
         private void Update()
         {
             if (!createTemplate) return;
-            SetTimer();
-            SendToScriptable();
+            SetTimers();
+            CheckTemplateContents();
         }
 
-        private void SetTimer()
+        private void SetTimers()
         {
             timer += Time.deltaTime;
+            if (TimingCooldown > 0)
+            {
+                TimingCooldown -= Time.deltaTime;
+            }
+        }
+
+        private void CheckTemplateContents()
+        {
+            if (!overrideTemplate)
+            {
+                if (songTemplate.peakPoints.Count > 1)
+                {
+                    Debug.LogWarning("template already contains values");
+                }
+                else
+                {
+                    SendToScriptable();
+                }
+            }
+            else
+            {
+                SendToScriptable();
+            }
         }
 
         private void SendToScriptable()
         {
-            for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
+            if (overrideTemplate)
             {
-                if (samples[i] >= detectionThreshold)
+                for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
                 {
+                    if (!(TimingCooldown <= 0)) continue;
+                    if (!(SpectrumAnalysis.instance.samples[i] >= detectionThreshold)) continue;
+                    TimingCooldown = secondsBetweenAdding;
                     beepAudioSource.PlayOneShot(beepSound);
-                    Debug.Log("added");
                     newTemplateList.Add(timer);
                     newTemplateList = newTemplateList.Distinct().ToList();
                     songTemplate.peakPoints = newTemplateList;

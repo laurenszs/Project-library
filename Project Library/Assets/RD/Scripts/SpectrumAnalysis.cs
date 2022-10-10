@@ -6,11 +6,26 @@ namespace RD.Scripts
     [RequireComponent(typeof(AudioSource))]
     public class SpectrumAnalysis : MonoBehaviour
     {
+        public static SpectrumAnalysis instance;
         public FFTWindow fftWindow;
-        [ReadOnly] [ShowInInspector] public static int sampleSize = 1024;
+        [ReadOnly] [ShowInInspector] public int sampleSize = 1024;
 
-        [ShowInInspector] [ReadOnly] public static float[] samples;
+        [ShowInInspector] [ReadOnly] public float[] samples;
         private AudioSource _audioSource;
+
+        private void Awake()
+        {
+            // If there is an instance, and it's not me, delete myself.
+
+            if (instance != null && instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                instance = this;
+            }
+        }
 
         // Start is called before the first frame update
         private void Start()
