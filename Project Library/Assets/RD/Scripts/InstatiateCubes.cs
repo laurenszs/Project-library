@@ -1,3 +1,4 @@
+using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -17,15 +18,23 @@ namespace RD.Scripts
 
         private GameObject[] _cubeList;
 
-        private float _angle = 0.3515625f;
+        [ReadOnly] public float _angle;
 
 
         // Start is called before the first frame update
         private void Start()
         {
-            _cubeList = new GameObject[SpectrumAnalysis.instance.sampleSize];
+            _angle = 360 / (float) SpectrumAnalysis.instance.frequencyBands;
+            Invoke(nameof(SetCubes), .1f);
+        }
+
+        private void SetCubes()
+        {
+            _cubeList = null;
+            _cubeList = new GameObject[SpectrumAnalysis.instance.frequencyBands];
             for (var i = 0; i < _cubeList.Length; i++)
             {
+                Debug.Log(i);
                 var instancedCube = Instantiate(cubePrefab, this.transform);
 
                 instancedCube.transform.position = transform.position;

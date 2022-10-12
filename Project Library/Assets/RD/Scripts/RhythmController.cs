@@ -9,21 +9,12 @@ namespace RD.Scripts
     public class RhythmController : MonoBehaviour
     {
         [TabGroup("Input")] [SerializeField] private KeyCode key;
-        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI timerText;
-        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI scoreText;
-        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI currentPoint;
-
-        [TabGroup("TimerData")] [SerializeField]
-        private float scoreDelay = .3f;
+        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI timerText, scoreText, currentPoint;
 
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
-        private float timer;
-
-        [TabGroup("TimerData")] [ReadOnly] [SerializeField]
-        private float delay;
+        private float timer, delay, scoreDelay = .3f;
 
         [TabGroup("TimerData")] public SongTemplate songTemplate;
-
 
         [TabGroup("TimerData")] [SerializeField]
         private List<float> rhythmPoints;
@@ -31,8 +22,9 @@ namespace RD.Scripts
         [TabGroup("TimerData")] [SerializeField]
         private int rhythmPointIndex;
 
-        [TabGroup("Score")] [ReadOnly] [SerializeField]
-        private int score;
+        [TabGroup("Score")] [SerializeField] private int baseScore = 500, subtractionMultiplier = 100, score;
+
+        [SerializeField] private GameObject rhythmIndicator;
 
         private void Awake()
         {
@@ -56,24 +48,30 @@ namespace RD.Scripts
         private void Update()
         {
             SetTimer();
-            SetScore();
-            CalculateDelayScore();
+            SetText();
+            //  CalculateDelayScore();
+            delay = timer - rhythmPoints[rhythmPointIndex];
+            rhythmIndicator.transform.position = new Vector3(rhythmIndicator.transform.position.x, delay *= -1,
+                rhythmIndicator.transform.position.z);
         }
 
 
-        private void CalculateDelayScore()
-        {
-            if (rhythmPointIndex >= rhythmPoints.Count)
-            {
-                rhythmPointIndex = 0;
-            }
-            else if (timer > rhythmPoints[rhythmPointIndex] + scoreDelay) //when timer exceeds rhythmpoint add to index
-            {
-                delay = timer - rhythmPoints[rhythmPointIndex];
-                currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
-                rhythmPointIndex++;
-            }
-        }
+        // private void CalculateDelayScore()
+        // {
+        //     if (!Input.GetKeyDown(key)) return;
+        //     if (rhythmPointIndex >= rhythmPoints.Count)
+        //     {
+        //         rhythmPointIndex = 0;
+        //         return;
+        //     }
+        //
+        //     delay = timer - rhythmPoints[rhythmPointIndex];
+        //     score += Mathf.RoundToInt(baseScore - delay * subtractionMultiplier);
+        //
+        //     if (!(timer > rhythmPoints[rhythmPointIndex] + scoreDelay)) return;
+        //     score -= baseScore;
+        //     rhythmPointIndex++;
+        // }
 
         private void SetTimer()
         {
@@ -82,12 +80,10 @@ namespace RD.Scripts
         }
 
 
-        private void SetScore()
+        private void SetText()
         {
-            if (!Input.GetKeyDown(key)) return;
-            Debug.Log("erg0jmeprgpomergpom");
-            score += (int) delay;
-            scoreText.text = score.ToString();
+            scoreText.text = delay.ToString();
+            currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
         }
     }
 }

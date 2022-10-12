@@ -7,11 +7,17 @@ namespace RD.Scripts
     public class SpectrumAnalysis : MonoBehaviour
     {
         public static SpectrumAnalysis instance;
+
         public FFTWindow fftWindow;
-        [ReadOnly] [ShowInInspector] public int sampleSize = 1024;
+        //    [ReadOnly] [ShowInInspector] public int sampleSize = 1024;
 
         [ShowInInspector] [ReadOnly] public float[] samples;
         private AudioSource _audioSource;
+
+        [ValueDropdown(nameof(_bandValues))] public int frequencyBands;
+
+        private static int[] _bandValues = new[] {512, 1024, 2048};
+
 
         private void Awake()
         {
@@ -30,7 +36,7 @@ namespace RD.Scripts
         // Start is called before the first frame update
         private void Start()
         {
-            samples = new float[sampleSize];
+            samples = new float[frequencyBands];
             _audioSource = GetComponent<AudioSource>();
         }
 

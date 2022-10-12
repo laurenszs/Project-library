@@ -13,7 +13,7 @@ namespace RD.Scripts
 
         [ReadOnly] [SerializeField] private float timer;
 
-        [ReadOnly] [SerializeField] private float TimingCooldown;
+        [ReadOnly] [SerializeField] private float timingCooldown;
 
         [SerializeField] private float secondsBetweenAdding;
 
@@ -43,9 +43,9 @@ namespace RD.Scripts
         private void SetTimers()
         {
             timer += Time.deltaTime;
-            if (TimingCooldown > 0)
+            if (timingCooldown > 0)
             {
-                TimingCooldown -= Time.deltaTime;
+                timingCooldown -= Time.deltaTime;
             }
         }
 
@@ -74,9 +74,9 @@ namespace RD.Scripts
             {
                 for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
                 {
-                    if (!(TimingCooldown <= 0)) continue;
+                    if (!(timingCooldown <= 0)) continue;
                     if (!(SpectrumAnalysis.instance.samples[i] >= detectionThreshold)) continue;
-                    TimingCooldown = secondsBetweenAdding;
+                    timingCooldown = secondsBetweenAdding;
                     beepAudioSource.PlayOneShot(beepSound);
                     newTemplateList.Add(timer);
                     newTemplateList = newTemplateList.Distinct().ToList();
