@@ -12,7 +12,7 @@ namespace RD.Scripts
         [TabGroup("Text")] [SerializeField] private TextMeshProUGUI timerText, scoreText, currentPoint;
 
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
-        private float timer, delay, scoreDelay = .3f;
+        private float timer;
 
         [TabGroup("TimerData")] public SongTemplate songTemplate;
 
@@ -22,12 +22,12 @@ namespace RD.Scripts
         [TabGroup("TimerData")] [SerializeField]
         private int rhythmPointIndex;
 
-        [TabGroup("Score")] [SerializeField] private int baseScore = 500, subtractionMultiplier = 100, score;
+        [TabGroup("Score")] [SerializeField] private int baseScore = 500, score;
 
-        [SerializeField] private GameObject rhythmIndicator;
+        [TabGroup("Score")] [SerializeField] [ReadOnly]
+        private bool scoringEnabled = true;
 
-        [SerializeField] [ReadOnly] private bool scoringEnabled = true;
-        [SerializeField] private float rhythmLeeway = .7f;
+        [SerializeField] private float rhythmForgiveness = .7f;
 
         private void Awake()
         {
@@ -53,14 +53,12 @@ namespace RD.Scripts
             SetTimer();
             SetText();
             CalculateDelay();
-            rhythmIndicator.transform.position = new Vector3(rhythmIndicator.transform.position.x, delay *= -1,
-                rhythmIndicator.transform.position.z);
         }
 
 
         private void CalculateDelay()
         {
-            if (timer >= rhythmPoints[rhythmPointIndex] + rhythmLeeway)
+            if (timer >= rhythmPoints[rhythmPointIndex] + rhythmForgiveness) //when timer exceeds index go next
             {
                 scoringEnabled = true;
                 rhythmPointIndex++;
@@ -80,10 +78,12 @@ namespace RD.Scripts
             float calculatedScore;
             if (rhythmPointIndex > 0)
             {
+                // calculate score based on % of available score
                 calculatedScore = baseScore - ((rhythmPoints[rhythmPointIndex] - timer) /
                     (rhythmPoints[rhythmPointIndex] - rhythmPoints[rhythmPointIndex - 1]) * baseScore);
+                // base score - (( timer dif ) / ( max time ) * base score)
             }
-            else
+            else //fix for index null on index = 0
             {
                 calculatedScore = baseScore - ((rhythmPoints[rhythmPointIndex] - timer) /
                     (rhythmPoints[rhythmPointIndex]) * baseScore);

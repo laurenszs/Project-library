@@ -53,11 +53,11 @@ namespace RD.Scripts
         {
             if (!overrideTemplate)
             {
-                if (songTemplate.peakPoints.Count > 1)
+                if (songTemplate.peakPoints.Count > 1) //check if template array already contains values
                 {
                     Debug.LogWarning("template already contains values");
                 }
-                else
+                else //if array does not contain values override anyway
                 {
                     SendToScriptable();
                 }
@@ -70,18 +70,15 @@ namespace RD.Scripts
 
         private void SendToScriptable()
         {
-            if (overrideTemplate)
+            for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
             {
-                for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
-                {
-                    if (!(timingCooldown <= 0)) continue;
-                    if (!(SpectrumAnalysis.instance.samples[i] >= detectionThreshold)) continue;
-                    timingCooldown = secondsBetweenAdding;
-                    beepAudioSource.PlayOneShot(beepSound);
-                    newTemplateList.Add(timer);
-                    newTemplateList = newTemplateList.Distinct().ToList();
-                    songTemplate.peakPoints = newTemplateList;
-                }
+                if (!(timingCooldown <= 0)) continue;
+                if (!(SpectrumAnalysis.instance.samples[i] >= detectionThreshold)) continue; //only save values above threshold
+                timingCooldown = secondsBetweenAdding; 
+                beepAudioSource.PlayOneShot(beepSound);
+                newTemplateList.Add(timer);
+                newTemplateList = newTemplateList.Distinct().ToList();// check for duplicates in list
+                songTemplate.peakPoints = newTemplateList;
             }
         }
     }
