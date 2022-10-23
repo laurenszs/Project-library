@@ -34,7 +34,6 @@ namespace RD.Scripts
             _cubeList = new GameObject[SpectrumAnalysis.instance.frequencyBands];
             for (var i = 0; i < _cubeList.Length; i++)
             {
-                Debug.Log(i);
                 var instancedCube = Instantiate(cubePrefab, this.transform);
 
                 instancedCube.transform.position = transform.position;

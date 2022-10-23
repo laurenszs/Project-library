@@ -26,6 +26,9 @@ namespace RD.Scripts
 
         [SerializeField] private GameObject rhythmIndicator;
 
+        [SerializeField] [ReadOnly] private bool scoringEnabled = true;
+        [SerializeField] private float rhythmLeeway = .7f;
+
         private void Awake()
         {
             if (!songTemplate)
@@ -49,29 +52,45 @@ namespace RD.Scripts
         {
             SetTimer();
             SetText();
-            //  CalculateDelayScore();
-            delay = timer - rhythmPoints[rhythmPointIndex];
+            CalculateDelay();
             rhythmIndicator.transform.position = new Vector3(rhythmIndicator.transform.position.x, delay *= -1,
                 rhythmIndicator.transform.position.z);
         }
 
 
-        // private void CalculateDelayScore()
-        // {
-        //     if (!Input.GetKeyDown(key)) return;
-        //     if (rhythmPointIndex >= rhythmPoints.Count)
-        //     {
-        //         rhythmPointIndex = 0;
-        //         return;
-        //     }
-        //
-        //     delay = timer - rhythmPoints[rhythmPointIndex];
-        //     score += Mathf.RoundToInt(baseScore - delay * subtractionMultiplier);
-        //
-        //     if (!(timer > rhythmPoints[rhythmPointIndex] + scoreDelay)) return;
-        //     score -= baseScore;
-        //     rhythmPointIndex++;
-        // }
+        private void CalculateDelay()
+        {
+            if (timer >= rhythmPoints[rhythmPointIndex] + rhythmLeeway)
+            {
+                scoringEnabled = true;
+                rhythmPointIndex++;
+            }
+
+            if (!Input.GetKeyDown(key)) return;
+            if (rhythmPoints[rhythmPointIndex] > timer && scoringEnabled)
+            {
+                CalculateScore();
+                scoringEnabled = false;
+            }
+        }
+
+
+        private void CalculateScore()
+        {
+            float calculatedScore;
+            if (rhythmPointIndex > 0)
+            {
+                calculatedScore = baseScore - ((rhythmPoints[rhythmPointIndex] - timer) /
+                    (rhythmPoints[rhythmPointIndex] - rhythmPoints[rhythmPointIndex - 1]) * baseScore);
+            }
+            else
+            {
+                calculatedScore = baseScore - ((rhythmPoints[rhythmPointIndex] - timer) /
+                    (rhythmPoints[rhythmPointIndex]) * baseScore);
+            }
+
+            score += (int) calculatedScore;
+        }
 
         private void SetTimer()
         {
@@ -82,7 +101,7 @@ namespace RD.Scripts
 
         private void SetText()
         {
-            scoreText.text = delay.ToString();
+            scoreText.text = score.ToString();
             currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
         }
     }
