@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RD.Scripts.Scriptable;
 using Sirenix.OdinInspector;
@@ -69,6 +70,12 @@ namespace RD.Scripts
                 new Vector3(cubeContainer.localPosition.x, -timer);
         }
 
+        public float RhythmPointIndexDifference()
+        {
+            var indexDiff = (rhythmPoints[rhythmPointIndex] - timer) /
+                            (rhythmPoints[rhythmPointIndex] - rhythmPoints[rhythmPointIndex - 1]);
+            return indexDiff;
+        }
 
         private void CalculateDelay()
         {
@@ -85,6 +92,7 @@ namespace RD.Scripts
             if (!Input.GetKeyDown(key)) return;
 
             DisplayDelay();
+            RhythmVisuals.instance.PlayParticles();
             if (!(rhythmPoints[rhythmPointIndex] > timer) || !scoringEnabled) return;
             CalculateScore();
             scoringEnabled = false;
@@ -118,51 +126,63 @@ namespace RD.Scripts
         /// checks the difference between the current and previous (-1) index datapoint
         /// </summary>
         /// <returns></returns>
-        private float RhythmPointIndexDifference()
-        {
-            var indexDiff = (rhythmPoints[rhythmPointIndex] - timer) /
-                            (rhythmPoints[rhythmPointIndex] - rhythmPoints[rhythmPointIndex - 1]);
-            return indexDiff;
-        }
-
         private void DisplayDelay()
         {
-            delayText.text = (RhythmPointIndexDifference()) switch
-            {
-                <= .25f => "Very early",
-                < .75f => "Early",
-                >= .75f => "Good",
-                _ => delayText.text
-            };
-            foreach (var t in _cubeList)
-            {
-                t.GetComponent<MeshRenderer>().material.color = ( RhythmPointIndexDifference()) switch
-                {
-                    <= .25f => Color.red,
-                    < .75f => Color.yellow,
-                    >= .75f => Color.cyan,
-                    _ => t.GetComponent<MeshRenderer>().material.color
-                };
+            // delayText.text = RhythmPointIndexDifference() switch
+            // {
+            //     <= .25f => GlobalValues.VeryEarly,
+            //     < .75f => GlobalValues.Early,
+            //     >= .75f => GlobalValues.Good,
+            //     _ => delayText.text
+            // };
+            // foreach (var t in _cubeList)
+            // {
+            //     t.GetComponent<MeshRenderer>().material.color = RhythmPointIndexDifference() switch
+            //     {
+            //         <= .25f => Color.red,
+            //         < .75f => Color.yellow,
+            //         >= .75f => Color.cyan,
+            //         _ => t.GetComponent<MeshRenderer>().material.color
+            //     };
+            //
+            //     if (overtime) t.GetComponent<MeshRenderer>().material.color = Color.black;
+            // }
 
-                if (overtime) t.GetComponent<MeshRenderer>().material.color = Color.black;
+
+            var t = _cubeList[rhythmPointIndex];
+            switch (RhythmPointIndexDifference())
+            {
+                case >= .95f:
+                    delayText.text = GlobalValues.Perfect;
+                    break;
+                case >= .75f:
+                    delayText.text = GlobalValues.Good;
+                    t.GetComponent<MeshRenderer>().material.color = Color.cyan;
+                    break;
+                case <= .25f:
+                    t.GetComponent<MeshRenderer>().material.color = Color.red;
+                    delayText.text = GlobalValues.VeryEarly;
+                    break;
+                case < .75f:
+                    delayText.text = GlobalValues.Early;
+                    t.GetComponent<MeshRenderer>().material.color = Color.yellow;
+                    break;
             }
+
+            if (overtime) t.GetComponent<MeshRenderer>().material.color = Color.black;
         }
 
-        // private void setDelayInfo(Color)
-        // {
-        //     
-        // }
 
         private void SetTimer()
         {
             timer += Time.deltaTime;
-            timerText.text = timer.ToString();
         }
 
 
         private void SetText()
         {
             scoreText.text = score.ToString();
+            timerText.text = Math.Round(timer, 1).ToString();
 
             currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
         }
