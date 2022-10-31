@@ -48,26 +48,29 @@ namespace RD.Scripts
         // Update is called once per frame
         private void Update()
         {
+            SetPeakColor();
+        }
+
+        private void SetPeakColor()
+        {
+            if (_cubeList == null) return;
             for (var i = 0; i < _cubeList.Length; i++)
             {
-                if (_cubeList != null)
+                _cubeList[i].transform.localScale =
+                    new Vector3(cubeSizeX, (SpectrumAnalysis.instance.samples[i] * maxYScale) + startingSize,
+                        cubeSizeZ);
+                if (SpectrumAnalysis.instance.samples[i] >
+                    detectionThreshold) //check for amplitude above certain threshold
                 {
-                    _cubeList[i].transform.localScale =
-                        new Vector3(cubeSizeX, (SpectrumAnalysis.instance.samples[i] * maxYScale) + startingSize,
-                            cubeSizeZ);
-                    if (SpectrumAnalysis.instance.samples[i] >
-                        detectionThreshold) //check for amplitude above certain threshold
-                    {
-                        _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.red;
-                    }
-                    else if (SpectrumAnalysis.instance.samples[i] > detectionThreshold / 2)
-                    {
-                        _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
-                    }
-                    else
-                    {
-                        _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.grey;
-                    }
+                    _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.red;
+                }
+                else if (SpectrumAnalysis.instance.samples[i] > detectionThreshold / 2)
+                {
+                    _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                }
+                else
+                {
+                    _cubeList[i].GetComponent<MeshRenderer>().material.color = Color.grey;
                 }
             }
         }

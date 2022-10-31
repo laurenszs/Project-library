@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using RD.Scripts.Scriptable;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RD.Scripts
@@ -17,11 +16,12 @@ namespace RD.Scripts
 
         [SerializeField] private float secondsBetweenAdding;
 
-
         [Title("", "Template data")] public Vector2 analysisRange = new(0, 50);
 
-        [Range(.01f, .4f)] public float detectionThreshold = .03f;
-        [SerializeField] private bool overrideTemplate = false;
+        [Tooltip("higher is more datapoints per second ")] [Range(.01f, .4f)]
+        public float detectionThreshold = .03f;
+
+        [SerializeField] private bool overrideTemplate;
 
         public SongTemplate songTemplate;
 
@@ -31,6 +31,8 @@ namespace RD.Scripts
         [Title("", "Debug Noise")] public AudioSource beepAudioSource;
 
         [ShowIfGroup("createTemplate")] public AudioClip beepSound;
+        
+        
 
 // Update is called once per frame
         private void Update()
@@ -51,6 +53,7 @@ namespace RD.Scripts
 
         private void CheckTemplateContents()
         {
+            if (!(timer <= songTemplate.audioClip.length)) return;
             if (!overrideTemplate)
             {
                 if (songTemplate.peakPoints.Count > 1) //check if template array already contains values
@@ -73,11 +76,12 @@ namespace RD.Scripts
             for (var i = (int) analysisRange.x; i < (int) analysisRange.y; i++)
             {
                 if (!(timingCooldown <= 0)) continue;
-                if (!(SpectrumAnalysis.instance.samples[i] >= detectionThreshold)) continue; //only save values above threshold
-                timingCooldown = secondsBetweenAdding; 
+                if (!(SpectrumAnalysis.instance.samples[i] >= detectionThreshold))
+                    continue; //only save values above threshold
+                timingCooldown = secondsBetweenAdding;
                 beepAudioSource.PlayOneShot(beepSound);
                 newTemplateList.Add(timer);
-                newTemplateList = newTemplateList.Distinct().ToList();// check for duplicates in list
+                newTemplateList = newTemplateList.Distinct().ToList(); // check for duplicates in list
                 songTemplate.peakPoints = newTemplateList;
             }
         }
