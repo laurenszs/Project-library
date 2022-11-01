@@ -10,7 +10,7 @@ namespace RD.Scripts
     public class RhythmController : MonoBehaviour
     {
         [TabGroup("Input")] [SerializeField] private KeyCode key;
-        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI timerText, scoreText, currentPoint, delayText;
+        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI timerText, scoreText, currentPoint;
 
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
         private float timer;
@@ -58,13 +58,12 @@ namespace RD.Scripts
 
         private void Update()
         {
-            SetTimer();
-            if (rhythmPointIndex <= rhythmPoints.Count)
+            if (rhythmPointIndex < rhythmPoints.Count)
             {
+                SetTimer();
                 SetText();
                 CalculateDelay();
             }
-
 
             cubeContainer.localPosition =
                 new Vector3(cubeContainer.localPosition.x, -timer);
@@ -85,17 +84,21 @@ namespace RD.Scripts
                 rhythmPointIndex++;
             }
 
-            overtime = timer >= rhythmPoints[rhythmPointIndex] &&
-                       timer <= rhythmPoints[rhythmPointIndex] + rhythmOvertime;
+
+            // overtime = timer >= rhythmPoints[rhythmPointIndex] &&
+            //            timer <= rhythmPoints[rhythmPointIndex] + rhythmOvertime;
 
             if (rhythmPointIndex > rhythmPoints.Count) return;
             if (!Input.GetKeyDown(key)) return;
 
-            DisplayDelay();
-            RhythmVisuals.instance.PlayParticles();
+
             if (!(rhythmPoints[rhythmPointIndex] > timer) || !scoringEnabled) return;
             CalculateScore();
+            RhythmVisuals.instance.UpdateVisuals(_cubeList, rhythmPointIndex);
             scoringEnabled = false;
+            if (rhythmPointIndex <= rhythmPoints.Count) return;
+
+            rhythmPointIndex = rhythmPoints.Count;
         }
 
 
@@ -122,57 +125,6 @@ namespace RD.Scripts
             cubeContainer.localPosition = new Vector3(cubeContainer.localPosition.x, rhythmPoints[^1]);
         }
 
-        /// <summary>
-        /// checks the difference between the current and previous (-1) index datapoint
-        /// </summary>
-        /// <returns></returns>
-        private void DisplayDelay()
-        {
-            // delayText.text = RhythmPointIndexDifference() switch
-            // {
-            //     <= .25f => GlobalValues.VeryEarly,
-            //     < .75f => GlobalValues.Early,
-            //     >= .75f => GlobalValues.Good,
-            //     _ => delayText.text
-            // };
-            // foreach (var t in _cubeList)
-            // {
-            //     t.GetComponent<MeshRenderer>().material.color = RhythmPointIndexDifference() switch
-            //     {
-            //         <= .25f => Color.red,
-            //         < .75f => Color.yellow,
-            //         >= .75f => Color.cyan,
-            //         _ => t.GetComponent<MeshRenderer>().material.color
-            //     };
-            //
-            //     if (overtime) t.GetComponent<MeshRenderer>().material.color = Color.black;
-            // }
-
-
-            var t = _cubeList[rhythmPointIndex];
-            switch (RhythmPointIndexDifference())
-            {
-                case >= .95f:
-                    delayText.text = GlobalValues.Perfect;
-                    break;
-                case >= .75f:
-                    delayText.text = GlobalValues.Good;
-                    t.GetComponent<MeshRenderer>().material.color = Color.cyan;
-                    break;
-                case <= .25f:
-                    t.GetComponent<MeshRenderer>().material.color = Color.red;
-                    delayText.text = GlobalValues.VeryEarly;
-                    break;
-                case < .75f:
-                    delayText.text = GlobalValues.Early;
-                    t.GetComponent<MeshRenderer>().material.color = Color.yellow;
-                    break;
-            }
-
-            if (overtime) t.GetComponent<MeshRenderer>().material.color = Color.black;
-        }
-
-
         private void SetTimer()
         {
             timer += Time.deltaTime;
@@ -182,7 +134,8 @@ namespace RD.Scripts
         private void SetText()
         {
             scoreText.text = score.ToString();
-            timerText.text = Math.Round(timer, 1).ToString();
+            var timeSpan = TimeSpan.FromSeconds(timer);
+            timerText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
 
             currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
         }

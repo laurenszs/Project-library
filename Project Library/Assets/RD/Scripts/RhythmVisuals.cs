@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace RD.Scripts
@@ -8,6 +10,11 @@ namespace RD.Scripts
         public static RhythmVisuals instance;
 
         [SerializeField] private ParticleSystem pSystem;
+        private ParticleSystem.MainModule _particleSystemMain;
+        private ParticleSystem.EmissionModule _particleSystemEmission;
+
+        [SerializeField] private TextMeshProUGUI delayText;
+
 
         // Start is called before the first frame update
         private void Awake()
@@ -25,32 +32,43 @@ namespace RD.Scripts
         private void Start()
         {
             _rhythmController = GetComponent<RhythmController>();
+            _particleSystemMain = pSystem.main;
+            _particleSystemEmission = pSystem.emission;
         }
 
-        public void PlayParticles()
+        public void UpdateVisuals(List<GameObject> cubeList, int rhythmPointIndex)
         {
-            var particleSystemMain = pSystem.main;
-            var particleSystemEmission = pSystem.emission;
+            var t = cubeList[rhythmPointIndex];
+            var tg = t.GetComponent<MeshRenderer>().material;
             switch (_rhythmController.RhythmPointIndexDifference())
             {
                 case <= GlobalValues.ThresholdVeryEarly:
-                    particleSystemMain.startColor = GlobalValues.ColorVeryEarly;
-                    particleSystemEmission.rateOverTime = 50;
+                    _particleSystemMain.startColor = GlobalValues.ColorVeryEarly;
+                    _particleSystemEmission.rateOverTime = 50;
+                    delayText.text = GlobalValues.VeryEarly;
+                    tg.color = GlobalValues.ColorVeryEarly;
                     break;
                 case < GlobalValues.ThresholdEarly:
-                    particleSystemMain.startColor = GlobalValues.ColorEarly;
-                    particleSystemEmission.rateOverTime = 100;
+                    _particleSystemMain.startColor = GlobalValues.ColorEarly;
+                    _particleSystemEmission.rateOverTime = 100;
+                    delayText.text = GlobalValues.Early;
+                    tg.color = GlobalValues.ColorEarly;
                     break;
                 case <= GlobalValues.ThresholdGood:
-                    particleSystemMain.startColor = GlobalValues.ColorGood;
-                    particleSystemEmission.rateOverTime = 250;
+                    _particleSystemMain.startColor = GlobalValues.ColorGood;
+                    _particleSystemEmission.rateOverTime = 250;
+                    delayText.text = GlobalValues.Good;
+                    tg.color = GlobalValues.ColorGood;
                     break;
 
                 case <= GlobalValues.ThresholdPerfect:
-                    particleSystemMain.startColor = GlobalValues.ColorPerfect;
-                    particleSystemEmission.rateOverTime = 500;
+                    _particleSystemMain.startColor = GlobalValues.ColorPerfect;
+                    _particleSystemEmission.rateOverTime = 500;
+                    delayText.text = GlobalValues.Perfect;
+                    tg.color = GlobalValues.ColorPerfect;
                     break;
             }
+
 
             pSystem.Play();
         }
