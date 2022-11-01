@@ -10,7 +10,9 @@ namespace RD.Scripts
     public class RhythmController : MonoBehaviour
     {
         [TabGroup("Input")] [SerializeField] private KeyCode key;
-        [TabGroup("Text")] [SerializeField] private TextMeshProUGUI timerText, scoreText, currentPoint;
+
+        [TabGroup("Text")] [SerializeField]
+        private TextMeshProUGUI timerText, scoreText, currentPoint, delayText, delaySnapText;
 
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
         private float timer;
@@ -23,7 +25,7 @@ namespace RD.Scripts
         [TabGroup("TimerData")] [SerializeField]
         private int rhythmPointIndex;
 
-        [TabGroup("Score")] [SerializeField] private int baseScore = 500, score;
+        [TabGroup("Score")] [SerializeField] private int score;
 
         [TabGroup("Score")] [SerializeField] [ReadOnly]
         private bool scoringEnabled = true;
@@ -71,8 +73,18 @@ namespace RD.Scripts
 
         public float RhythmPointIndexDifference()
         {
-            var indexDiff = (rhythmPoints[rhythmPointIndex] - timer) /
+            float indexDiff;
+            if (rhythmPointIndex > 1)
+            {
+                indexDiff = (rhythmPoints[rhythmPointIndex] - timer) /
                             (rhythmPoints[rhythmPointIndex] - rhythmPoints[rhythmPointIndex - 1]);
+            }
+            else
+            {
+                indexDiff = (rhythmPoints[rhythmPointIndex] - timer) / rhythmPoints[rhythmPointIndex];
+            }
+
+
             return indexDiff;
         }
 
@@ -106,11 +118,13 @@ namespace RD.Scripts
         {
             var calculatedScore = rhythmPointIndex switch
             {
-                > 0 => baseScore - RhythmPointIndexDifference() * baseScore,
-                _ => baseScore - (rhythmPoints[rhythmPointIndex] - timer) / rhythmPoints[rhythmPointIndex] * baseScore
+                > 0 => GlobalValues.BaseScore - RhythmPointIndexDifference() * GlobalValues.BaseScore,
+                _ => GlobalValues.BaseScore - (rhythmPoints[rhythmPointIndex] - timer) /
+                    rhythmPoints[rhythmPointIndex] * GlobalValues.BaseScore
             };
 
             score += (int) calculatedScore;
+            delaySnapText.text = $"+ {Mathf.RoundToInt(calculatedScore).ToString()}";
         }
 
         private void RhythmVisualizer()
@@ -134,6 +148,8 @@ namespace RD.Scripts
         private void SetText()
         {
             scoreText.text = score.ToString();
+            delayText.text = (GlobalValues.BaseScore - RhythmPointIndexDifference() * GlobalValues.BaseScore)
+                .ToString();
             var timeSpan = TimeSpan.FromSeconds(timer);
             timerText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
 

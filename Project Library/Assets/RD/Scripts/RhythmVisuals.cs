@@ -42,7 +42,7 @@ namespace RD.Scripts
             var tg = t.GetComponent<MeshRenderer>().material;
             switch (_rhythmController.RhythmPointIndexDifference())
             {
-                case <= GlobalValues.ThresholdVeryEarly:
+                case < GlobalValues.ThresholdVeryEarly:
                     _particleSystemMain.startColor = GlobalValues.ColorVeryEarly;
                     _particleSystemEmission.rateOverTime = 50;
                     delayText.text = GlobalValues.VeryEarly;
@@ -54,7 +54,7 @@ namespace RD.Scripts
                     delayText.text = GlobalValues.Early;
                     tg.color = GlobalValues.ColorEarly;
                     break;
-                case <= GlobalValues.ThresholdGood:
+                case < GlobalValues.ThresholdGood:
                     _particleSystemMain.startColor = GlobalValues.ColorGood;
                     _particleSystemEmission.rateOverTime = 250;
                     delayText.text = GlobalValues.Good;

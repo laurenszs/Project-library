@@ -19,7 +19,9 @@ namespace RD.Scripts
         public const float
             ThresholdVeryEarly = .25f,
             ThresholdEarly = .5f,
-            ThresholdGood = .8f,
-            ThresholdPerfect = 1f;
+            ThresholdGood = .75f,
+            ThresholdPerfect = .99f;
+
+        public const int BaseScore = 500;
     }
 }
