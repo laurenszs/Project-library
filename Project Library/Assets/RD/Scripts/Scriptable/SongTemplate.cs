@@ -8,5 +8,7 @@ namespace RD.Scripts.Scriptable
     {
         public List<float> peakPoints;
         public AudioClip audioClip;
+        public float delay;
+        public int highScore;
     }
 }

@@ -4,15 +4,13 @@ using RD.Scripts.Scriptable;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Mathf;
 
 namespace RD.Scripts
 {
     public class RhythmController : MonoBehaviour
     {
         [TabGroup("Input")] [SerializeField] private KeyCode key;
-
-        [TabGroup("Text")] [SerializeField]
-        private TextMeshProUGUI timerText, scoreText, currentPoint, delayText, delaySnapText;
 
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
         private float timer;
@@ -25,19 +23,21 @@ namespace RD.Scripts
         [TabGroup("TimerData")] [SerializeField]
         private int rhythmPointIndex;
 
-        [TabGroup("Score")] [SerializeField] private int score;
+        [TabGroup("TimerData")] [SerializeField]
+        private float rhythmOvertime = .7f;
 
-        [TabGroup("Score")] [SerializeField] [ReadOnly]
-        private bool scoringEnabled = true;
+        [TabGroup("TimerData")] [SerializeField]
+        private bool overtime;
 
-        [SerializeField] private float rhythmOvertime = .7f;
-        [SerializeField] private bool overtime;
+        [TabGroup("Visual")] [SerializeField]
+        public TextMeshProUGUI timerText, scoreText, currentPoint, delayText, delaySnapText, highScore;
 
-        [SerializeField] private GameObject cube;
-        [SerializeField] private Transform cubeContainer;
+        [TabGroup("Visual")] [SerializeField] private GameObject cube;
+        [TabGroup("Visual")] [SerializeField] private Transform cubeContainer;
 
         private List<GameObject> _cubeList;
-
+        private int _score;
+        private bool _scoringEnabled = true;
 
         private void Awake()
         {
@@ -47,7 +47,15 @@ namespace RD.Scripts
                 return;
             }
 
-            rhythmPoints = songTemplate.peakPoints;
+            AdjustPointsForDelay();
+        }
+
+        private void AdjustPointsForDelay()
+        {
+            foreach (var point in songTemplate.peakPoints)
+            {
+                rhythmPoints.Add(point + songTemplate.delay);
+            }
         }
 
         private void Start()
@@ -56,17 +64,19 @@ namespace RD.Scripts
             rhythmPointIndex = 0;
             _cubeList = new List<GameObject>();
             RhythmVisualizer();
+            highScore.text = songTemplate.highScore.ToString();
         }
 
         private void Update()
         {
+            SetText();
             if (rhythmPointIndex < rhythmPoints.Count)
             {
                 SetTimer();
-                SetText();
                 CalculateDelay();
             }
 
+            SetHighScore();
             cubeContainer.localPosition =
                 new Vector3(cubeContainer.localPosition.x, -timer);
         }
@@ -92,7 +102,7 @@ namespace RD.Scripts
         {
             if (timer >= rhythmPoints[rhythmPointIndex] + rhythmOvertime) //when timer exceeds index go next
             {
-                scoringEnabled = true;
+                _scoringEnabled = true;
                 rhythmPointIndex++;
             }
 
@@ -104,10 +114,10 @@ namespace RD.Scripts
             if (!Input.GetKeyDown(key)) return;
 
 
-            if (!(rhythmPoints[rhythmPointIndex] > timer) || !scoringEnabled) return;
+            if (!(rhythmPoints[rhythmPointIndex] > timer) || !_scoringEnabled) return;
             CalculateScore();
             RhythmVisuals.instance.UpdateVisuals(_cubeList, rhythmPointIndex);
-            scoringEnabled = false;
+            _scoringEnabled = false;
             if (rhythmPointIndex <= rhythmPoints.Count) return;
 
             rhythmPointIndex = rhythmPoints.Count;
@@ -123,8 +133,8 @@ namespace RD.Scripts
                     rhythmPoints[rhythmPointIndex] * GlobalValues.BaseScore
             };
 
-            score += (int) calculatedScore;
-            delaySnapText.text = $"+ {Mathf.RoundToInt(calculatedScore).ToString()}";
+            _score += (int) calculatedScore;
+            delaySnapText.text = $"+ {RoundToInt(calculatedScore).ToString()}";
         }
 
         private void RhythmVisualizer()
@@ -144,16 +154,27 @@ namespace RD.Scripts
             timer += Time.deltaTime;
         }
 
+        private void SetHighScore()
+        {
+            if (rhythmPointIndex == rhythmPoints.Count)
+            {
+                if (songTemplate.highScore < _score)
+                {
+                    songTemplate.highScore = _score;
+                    highScore.text = _score.ToString();
+                }
+            }
+        }
 
         private void SetText()
         {
-            scoreText.text = score.ToString();
+            scoreText.text = _score.ToString();
             delayText.text = (GlobalValues.BaseScore - RhythmPointIndexDifference() * GlobalValues.BaseScore)
                 .ToString();
             var timeSpan = TimeSpan.FromSeconds(timer);
             timerText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
 
-            currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
+            //  currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
         }
     }
 }

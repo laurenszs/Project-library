@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _LinesSize: 1
+    - _LinesSize: 3.61
     - _Speed: 0.3
     m_Colors:
     - _Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}

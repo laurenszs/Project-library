@@ -8,19 +8,27 @@ namespace RD.Scripts
             VeryEarly = "Very Early",
             Early = "Early",
             Good = "Good",
+            Great = "Great",
             Perfect = "Perfect";
 
         public static readonly Color
-            ColorVeryEarly = new Color32(200, 100, 0, 255),
-            ColorEarly = Color.yellow,
-            ColorGood = Color.cyan,
+            ColorVeryEarly = Color.red,
+            ColorEarly = new Color32(255, 100, 0, 255),
+            ColorGood = Color.yellow,
+            ColorGreat = Color.cyan,
             ColorPerfect = Color.green;
 
         public const float
-            ThresholdVeryEarly = .25f,
-            ThresholdEarly = .5f,
-            ThresholdGood = .75f,
-            ThresholdPerfect = .99f;
+            ThresholdVeryEarly = .99f,
+            ThresholdEarly = .75f,
+            ThresholdGood = .5f,
+            ThresholdGreat = .25f,
+            ThresholdPerfect = .1f;
+
+        // ThresholdVeryEarly = .25f,
+        // ThresholdEarly = .5f,
+        // ThresholdGood = .75f,
+        // ThresholdPerfect = .99f;
 
         public const int BaseScore = 500;
     }

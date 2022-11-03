@@ -16,7 +16,7 @@ namespace RD.Scripts
 
         [ValueDropdown(nameof(_bandValues))] public int frequencyBands;
 
-        private static int[] _bandValues = new[] {512, 1024, 2048};
+        private static int[] _bandValues = {512, 1024, 2048};
 
 
         private void Awake()
