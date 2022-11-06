@@ -25,11 +25,6 @@ namespace RD.Scripts
             ThresholdGreat = .25f,
             ThresholdPerfect = .1f;
 
-        // ThresholdVeryEarly = .25f,
-        // ThresholdEarly = .5f,
-        // ThresholdGood = .75f,
-        // ThresholdPerfect = .99f;
-
         public const int BaseScore = 500;
     }
 }

@@ -31,8 +31,7 @@ namespace RD.Scripts
         [Title("", "Debug Noise")] public AudioSource beepAudioSource;
 
         [ShowIfGroup("createTemplate")] public AudioClip beepSound;
-        
-        
+
 
 // Update is called once per frame
         private void Update()
@@ -40,6 +39,10 @@ namespace RD.Scripts
             if (!createTemplate) return;
             SetTimers();
             CheckTemplateContents();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                beepAudioSource.PlayOneShot(beepSound);
+            }
         }
 
         private void SetTimers()

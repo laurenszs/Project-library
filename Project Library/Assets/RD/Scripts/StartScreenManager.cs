@@ -34,7 +34,8 @@ namespace RD.Scripts
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(key))
+            var scene = SceneManager.GetActiveScene();
+            if (Input.GetKeyDown(key) && scene.buildIndex == 0)
             {
                 SwitchScene(index);
             }

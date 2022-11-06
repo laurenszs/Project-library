@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 447096673}
   - component: {fileID: 447096672}
   m_Layer: 0
-  m_Name: analyzer
+  m_Name: Analyzer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2734,7 +2734,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  frequencyBands: 512
+  frequencyBands: 2048
 --- !u!82 &447096674
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2745,7 +2745,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6f812903b7c80dc46973022535c98630, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2863,11 +2863,11 @@ MonoBehaviour:
   createTemplate: 0
   timer: 0
   timingCooldown: 0
-  secondsBetweenAdding: 0.5
+  secondsBetweenAdding: 0.1
   analysisRange: {x: 0, y: 50}
   detectionThreshold: 0.1
-  overrideTemplate: 0
-  songTemplate: {fileID: 11400000, guid: 3ebc2a11c86e0d04a8ff7bc84eb59879, type: 2}
+  overrideTemplate: 1
+  songTemplate: {fileID: 11400000, guid: 2c9597766c60c624da8486861a688d83, type: 2}
   newTemplateList: []
   beepAudioSource: {fileID: 9903681}
   beepSound: {fileID: 8300000, guid: 38b71ae451db8e4428c527e04a39890a, type: 3}
@@ -13768,11 +13768,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 32
+  _audioSource: {fileID: 447096674}
   timer: 6.199389
   songTemplate: {fileID: 11400000, guid: 3ebc2a11c86e0d04a8ff7bc84eb59879, type: 2}
   rhythmPoints: []
   rhythmPointIndex: 0
-  rhythmOvertime: 0.01
+  rhythmOvertime: 0.005
   overtime: 0
   timerText: {fileID: 985843682}
   scoreText: {fileID: 397826453}
@@ -13794,8 +13795,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2132982729}
   - {fileID: 447096671}
+  - {fileID: 2132982729}
   - {fileID: 863109352}
   m_Father: {fileID: 0}
   m_RootOrder: 2

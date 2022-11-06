@@ -11,6 +11,7 @@ namespace RD.Scripts
     public class RhythmController : MonoBehaviour
     {
         [TabGroup("Input")] [SerializeField] private KeyCode key;
+        [TabGroup("Input")] public AudioSource _audioSource;
 
         [TabGroup("TimerData")] [ReadOnly] [SerializeField]
         private float timer;
@@ -39,8 +40,10 @@ namespace RD.Scripts
         private int _score;
         private bool _scoringEnabled = true;
 
+
         private void Awake()
         {
+            _audioSource.PlayOneShot(songTemplate.audioClip);
             if (!songTemplate)
             {
                 Debug.LogWarning($"No template added to {this}");
@@ -94,7 +97,6 @@ namespace RD.Scripts
                 indexDiff = (rhythmPoints[rhythmPointIndex] - timer) / rhythmPoints[rhythmPointIndex];
             }
 
-
             return indexDiff;
         }
 
@@ -106,9 +108,6 @@ namespace RD.Scripts
                 rhythmPointIndex++;
             }
 
-
-            // overtime = timer >= rhythmPoints[rhythmPointIndex] &&
-            //            timer <= rhythmPoints[rhythmPointIndex] + rhythmOvertime;
 
             if (rhythmPointIndex > rhythmPoints.Count) return;
             if (!Input.GetKeyDown(key)) return;
@@ -156,13 +155,10 @@ namespace RD.Scripts
 
         private void SetHighScore()
         {
-            if (rhythmPointIndex == rhythmPoints.Count)
+            if (rhythmPointIndex == rhythmPoints.Count && songTemplate.highScore < _score)
             {
-                if (songTemplate.highScore < _score)
-                {
-                    songTemplate.highScore = _score;
-                    highScore.text = _score.ToString();
-                }
+                songTemplate.highScore = _score;
+                highScore.text = _score.ToString();
             }
         }
 
@@ -173,8 +169,6 @@ namespace RD.Scripts
                 .ToString();
             var timeSpan = TimeSpan.FromSeconds(timer);
             timerText.text = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
-
-            //  currentPoint.text = rhythmPoints[rhythmPointIndex].ToString();
         }
     }
 }

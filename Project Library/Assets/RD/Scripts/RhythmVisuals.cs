@@ -39,8 +39,8 @@ namespace RD.Scripts
 
         public void UpdateVisuals(List<GameObject> cubeList, int rhythmPointIndex)
         {
-            var t = cubeList[rhythmPointIndex];
-            var tg = t.GetComponent<MeshRenderer>().material;
+            var cList = cubeList[rhythmPointIndex];
+            var cListMat = cList.GetComponent<MeshRenderer>().material;
             switch (_rhythmController.RhythmPointIndexDifference())
             {
                 case < GlobalValues.ThresholdPerfect:
@@ -51,7 +51,7 @@ namespace RD.Scripts
                     delayHint.color = GlobalValues.ColorPerfect;
                     _rhythmController.delaySnapText.color = GlobalValues.ColorPerfect;
 
-                    tg.SetColor(EmissionColor, GlobalValues.ColorPerfect);
+                    cListMat.SetColor(EmissionColor, GlobalValues.ColorPerfect);
                     break;
                 case < GlobalValues.ThresholdGreat:
                     _particleSystemMain.startColor = GlobalValues.ColorGreat;
@@ -61,7 +61,7 @@ namespace RD.Scripts
                     delayHint.color = GlobalValues.ColorGreat;
                     _rhythmController.delaySnapText.color = GlobalValues.ColorGreat;
 
-                    tg.SetColor(EmissionColor, GlobalValues.ColorGreat);
+                    cListMat.SetColor(EmissionColor, GlobalValues.ColorGreat);
                     break;
                 case < GlobalValues.ThresholdGood:
                     _particleSystemMain.startColor = GlobalValues.ColorGood;
@@ -71,7 +71,7 @@ namespace RD.Scripts
                     delayHint.color = GlobalValues.ColorGood;
                     _rhythmController.delaySnapText.color = GlobalValues.ColorGood;
 
-                    tg.SetColor(EmissionColor, GlobalValues.ColorGood);
+                    cListMat.SetColor(EmissionColor, GlobalValues.ColorGood);
                     break;
                 case < GlobalValues.ThresholdEarly:
                     _particleSystemMain.startColor = GlobalValues.ColorEarly;
@@ -81,7 +81,7 @@ namespace RD.Scripts
                     delayHint.color = GlobalValues.ColorEarly;
                     _rhythmController.delaySnapText.color = GlobalValues.ColorEarly;
 
-                    tg.SetColor(EmissionColor, GlobalValues.ColorEarly);
+                    cListMat.SetColor(EmissionColor, GlobalValues.ColorEarly);
                     break;
 
                 case <= GlobalValues.ThresholdVeryEarly:
@@ -92,7 +92,7 @@ namespace RD.Scripts
                     delayHint.color = GlobalValues.ColorVeryEarly;
                     _rhythmController.delaySnapText.color = GlobalValues.ColorVeryEarly;
 
-                    tg.SetColor(EmissionColor, GlobalValues.ColorVeryEarly);
+                    cListMat.SetColor(EmissionColor, GlobalValues.ColorVeryEarly);
                     break;
             }
 
