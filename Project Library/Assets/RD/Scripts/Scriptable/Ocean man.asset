@@ -164,5 +164,5 @@ MonoBehaviour:
   - 56.14255
   - 56.390648
   audioClip: {fileID: 8300000, guid: c7718568fd8a9cd428e600bba18af4e9, type: 3}
-  delay: 0.118
+  delay: 0.9
   highScore: 55460

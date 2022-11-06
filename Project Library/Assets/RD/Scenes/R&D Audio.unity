@@ -2863,11 +2863,11 @@ MonoBehaviour:
   createTemplate: 0
   timer: 0
   timingCooldown: 0
-  secondsBetweenAdding: 0.1
-  analysisRange: {x: 0, y: 50}
-  detectionThreshold: 0.1
+  secondsBetweenAdding: 0.15
+  analysisRange: {x: 10, y: 30}
+  detectionThreshold: 0.085
   overrideTemplate: 1
-  songTemplate: {fileID: 11400000, guid: 2c9597766c60c624da8486861a688d83, type: 2}
+  songTemplate: {fileID: 11400000, guid: a17ac3bb4bbd0b74a8ca3d4033eab0cf, type: 2}
   newTemplateList: []
   beepAudioSource: {fileID: 9903681}
   beepSound: {fileID: 8300000, guid: 38b71ae451db8e4428c527e04a39890a, type: 3}
@@ -13770,7 +13770,7 @@ MonoBehaviour:
   key: 32
   _audioSource: {fileID: 447096674}
   timer: 6.199389
-  songTemplate: {fileID: 11400000, guid: 3ebc2a11c86e0d04a8ff7bc84eb59879, type: 2}
+  songTemplate: {fileID: 11400000, guid: a17ac3bb4bbd0b74a8ca3d4033eab0cf, type: 2}
   rhythmPoints: []
   rhythmPointIndex: 0
   rhythmOvertime: 0.005
