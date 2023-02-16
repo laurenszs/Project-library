@@ -9,13 +9,10 @@ namespace RD.Scripts
         public static SpectrumAnalysis instance;
 
         public FFTWindow fftWindow;
-        //    [ReadOnly] [ShowInInspector] public int sampleSize = 1024;
-
-        [ShowInInspector] [ReadOnly] public float[] samples;
+        [ReadOnly] public float[] samples;
         private AudioSource _audioSource;
 
         [ValueDropdown(nameof(_bandValues))] public int frequencyBands;
-
         private static int[] _bandValues = {512, 1024, 2048};
 
 
